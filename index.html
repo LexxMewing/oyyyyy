@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kode Pemformatan Minecraft - Preview & Generator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #1a1a2e;
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #16213e;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #4cc9f0;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .description {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #a5b1c2;
+        }
+        
+        .input-section {
+            margin-bottom: 30px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #4cc9f0;
+        }
+        
+        #text-input {
+            width: 100%;
+            padding: 12px;
+            background-color: #0f3460;
+            border: 1px solid #4cc9f0;
+            border-radius: 5px;
+            color: #e0e0e0;
+            font-size: 16px;
+            margin-bottom: 15px;
+        }
+        
+        #text-input:focus {
+            outline: none;
+            border-color: #f72585;
+            box-shadow: 0 0 5px rgba(247, 37, 133, 0.5);
+        }
+        
+        .preview-section {
+            background-color: #0f3460;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            min-height: 80px;
+            border: 1px solid #4cc9f0;
+        }
+        
+        .preview-title {
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #4cc9f0;
+        }
+        
+        #text-preview {
+            font-size: 18px;
+            line-height: 1.5;
+            min-height: 40px;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        #continue-btn {
+            background-color: #4cc9f0;
+            color: #16213e;
+        }
+        
+        #continue-btn:hover {
+            background-color: #3aa8cc;
+        }
+        
+        #continue-btn:disabled {
+            background-color: #2c5a6b;
+            cursor: not-allowed;
+        }
+        
+        #copy-btn {
+            background-color: #f72585;
+            color: white;
+        }
+        
+        #copy-btn:hover {
+            background-color: #d41a6f;
+        }
+        
+        .code-info {
+            margin-top: 30px;
+            background-color: #0f3460;
+            border-radius: 5px;
+            padding: 15px;
+            border-left: 4px solid #f72585;
+        }
+        
+        .code-info h3 {
+            color: #f72585;
+            margin-bottom: 10px;
+        }
+        
+        .code-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        
+        .code-table th, .code-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #1a3a5f;
+        }
+        
+        .code-table th {
+            color: #4cc9f0;
+        }
+        
+        .code-example {
+            font-family: monospace;
+            background-color: #1a1a2e;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        
+        .success-message {
+            background-color: #2a9d8f;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 15px;
+            text-align: center;
+            display: none;
+        }
+        
+        .minecraft-font {
+            font-family: 'Minecraft', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Kode Pemformatan Minecraft</h1>
+        <p class="description">Masukkan teks dengan kode pemformatan Minecraft (§) dan lihat pratinjaunya</p>
+        
+        <div class="input-section">
+            <label for="text-input">Masukkan Teks dengan Kode Pemformatan:</label>
+            <input type="text" id="text-input" placeholder="Contoh: §{codeOto}Book §{codeOto}UI §{codeOto}Lexx" value="§{codeOto}Book §{codeOto}UI §{codeOto}Lexx">
+        </div>
+        
+        <div class="preview-section">
+            <div class="preview-title">Pratinjau Teks:</div>
+            <div id="text-preview"></div>
+        </div>
+        
+        <div class="button-container">
+            <button id="continue-btn" disabled>Lanjutkan</button>
+            <button id="copy-btn">Salin Teks</button>
+        </div>
+        
+        <div class="success-message" id="success-message">Teks berhasil disalin!</div>
+        
+        <div class="code-info">
+            <h3>Kode Pemformatan Minecraft</h3>
+            <p>Gunakan kode berikut untuk memformat teks di Minecraft:</p>
+            <table class="code-table">
+                <tr>
+                    <th>Kode</th>
+                    <th>Warna</th>
+                    <th>Contoh</th>
+                </tr>
+                <tr>
+                    <td class="code-example">§0</td>
+                    <td>Hitam</td>
+                    <td><span style="color: #000000">Teks Hitam</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§1</td>
+                    <td>Biru Tua</td>
+                    <td><span style="color: #0000AA">Teks Biru Tua</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§2</td>
+                    <td>Hijau Tua</td>
+                    <td><span style="color: #00AA00">Teks Hijau Tua</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§3</td>
+                    <td>Biru-Hijau</td>
+                    <td><span style="color: #00AAAA">Teks Biru-Hijau</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§4</td>
+                    <td>Merah Tua</td>
+                    <td><span style="color: #AA0000">Teks Merah Tua</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§5</td>
+                    <td>Ungu</td>
+                    <td><span style="color: #AA00AA">Teks Ungu</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§6</td>
+                    <td>Emas</td>
+                    <td><span style="color: #FFAA00">Teks Emas</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§7</td>
+                    <td>Abu-abu</td>
+                    <td><span style="color: #AAAAAA">Teks Abu-abu</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§8</td>
+                    <td>Abu-abu Tua</td>
+                    <td><span style="color: #555555">Teks Abu-abu Tua</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§9</td>
+                    <td>Biru</td>
+                    <td><span style="color: #5555FF">Teks Biru</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§a</td>
+                    <td>Hijau</td>
+                    <td><span style="color: #55FF55">Teks Hijau</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§b</td>
+                    <td>Biru Muda</td>
+                    <td><span style="color: #55FFFF">Teks Biru Muda</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§c</td>
+                    <td>Merah</td>
+                    <td><span style="color: #FF5555">Teks Merah</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§d</td>
+                    <td>Merah Muda</td>
+                    <td><span style="color: #FF55FF">Teks Merah Muda</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§e</td>
+                    <td>Kuning</td>
+                    <td><span style="color: #FFFF55">Teks Kuning</span></td>
+                </tr>
+                <tr>
+                    <td class="code-example">§f</td>
+                    <td>Putih</td>
+                    <td><span style="color: #FFFFFF">Teks Putih</span></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInput = document.getElementById('text-input');
+            const textPreview = document.getElementById('text-preview');
+            const continueBtn = document.getElementById('continue-btn');
+            const copyBtn = document.getElementById('copy-btn');
+            const successMessage = document.getElementById('success-message');
+            
+            // Fungsi untuk mengonversi kode pemformatan Minecraft ke HTML
+            function convertMinecraftCodes(text) {
+                // Mapping kode warna Minecraft ke kode warna HTML
+                const colorMap = {
+                    '0': '#000000', // Hitam
+                    '1': '#0000AA', // Biru Tua
+                    '2': '#00AA00', // Hijau Tua
+                    '3': '#00AAAA', // Biru-Hijau
+                    '4': '#AA0000', // Merah Tua
+                    '5': '#AA00AA', // Ungu
+                    '6': '#FFAA00', // Emas
+                    '7': '#AAAAAA', // Abu-abu
+                    '8': '#555555', // Abu-abu Tua
+                    '9': '#5555FF', // Biru
+                    'a': '#55FF55', // Hijau
+                    'b': '#55FFFF', // Biru Muda
+                    'c': '#FF5555', // Merah
+                    'd': '#FF55FF', // Merah Muda
+                    'e': '#FFFF55', // Kuning
+                    'f': '#FFFFFF', // Putih
+                    'l': 'bold',    // Tebal
+                    'm': 'line-through', // Coret
+                    'n': 'underline',    // Garis bawah
+                    'o': 'italic',  // Miring
+                    'r': 'normal'   // Reset
+                };
+                
+                let result = '';
+                let currentColor = '#FFFFFF'; // Warna default (putih)
+                let currentStyle = 'normal';
+                
+                for (let i = 0; i < text.length; i++) {
+                    if (text[i] === '§' && i + 1 < text.length) {
+                        const code = text[i + 1].toLowerCase();
+                        
+                        if (colorMap[code]) {
+                            if (['l', 'm', 'n', 'o', 'r'].includes(code)) {
+                                // Kode gaya teks
+                                currentStyle = colorMap[code];
+                            } else {
+                                // Kode warna
+                                currentColor = colorMap[code];
+                            }
+                            
+                            i++; // Lewati kode berikutnya
+                            continue;
+                        }
+                    }
+                    
+                    // Tambahkan karakter dengan format saat ini
+                    let style = '';
+                    if (currentStyle === 'bold') {
+                        style = 'font-weight:bold;';
+                    } else if (currentStyle === 'italic') {
+                        style = 'font-style:italic;';
+                    } else if (currentStyle === 'underline') {
+                        style = 'text-decoration:underline;';
+                    } else if (currentStyle === 'line-through') {
+                        style = 'text-decoration:line-through;';
+                    }
+                    
+                    result += `<span style="color:${currentColor};${style}">${text[i]}</span>`;
+                }
+                
+                return result;
+            }
+            
+            // Fungsi untuk memperbarui pratinjau
+            function updatePreview() {
+                const inputText = textInput.value;
+                const previewHTML = convertMinecraftCodes(inputText);
+                textPreview.innerHTML = previewHTML;
+                
+                // Aktifkan tombol lanjut jika ada teks
+                continueBtn.disabled = inputText.trim() === '';
+            }
+            
+            // Event listener untuk input teks
+            textInput.addEventListener('input', updatePreview);
+            
+            // Event listener untuk tombol lanjut
+            continueBtn.addEventListener('click', function() {
+                alert('Teks telah diverifikasi. Anda dapat melanjutkan!');
+            });
+            
+            // Event listener untuk tombol salin
+            copyBtn.addEventListener('click', function() {
+                // Salin teks asli (dengan kode pemformatan) ke clipboard
+                navigator.clipboard.writeText(textInput.value).then(function() {
+                    // Tampilkan pesan sukses
+                    successMessage.style.display = 'block';
+                    setTimeout(function() {
+                        successMessage.style.display = 'none';
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Gagal menyalin teks: ', err);
+                    alert('Gagal menyalin teks. Silakan coba lagi.');
+                });
+            });
+            
+            // Inisialisasi pratinjau dengan nilai default
+            updatePreview();
+        });
+    </script>
+</body>
+</html>
